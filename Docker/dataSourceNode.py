@@ -1,9 +1,10 @@
 import random
 from datetime import datetime
 import time
-from urllib import request, parse
+import requests
 import json
 import os
+import ssl
 
 def function():
     sensorName = os.environ.get("SENSOR_NAME", "sensor1")
@@ -21,9 +22,14 @@ def function():
         data = {"sensorName": sensorName,"type":selectedCar, "speed": speed, "date": formatDate}
         data = json.dumps(data).encode('utf-8')
 
-        url = "http://10.132.174.139:8080/store"
-        req = request.Request(url, data=data, headers={'Content-Type': 'application/json'})
-        resp=request.urlopen(req)
+        url = "https://10.132.174.139:8080/store"
+
+        
+        cert_path = "/Users/marcos/Uni/4ºErasmus/CloudComputing/project/Docker/myCert.crt"
+        key_path = "/Users/marcos/Uni/4ºErasmus/CloudComputing/project/Docker/myKey.key"
+        ssl_context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+        ssl_context.load_cert_chain(certfile=cert_path, keyfile=key_path)
+        response = requests.post(url, data=data, headers={'Content-Type': 'application/json'},cert=(cert_path, key_path), verify=cert_path)
         time.sleep(write_period)
 
 if __name__ == "__main__":
