@@ -22,7 +22,7 @@ def function():
         data = {"sensorName": sensorName,"type":selectedCar, "speed": speed, "date": formatDate}
         data = json.dumps(data).encode('utf-8')
 
-        url = "https://10.132.174.139:8080/store"
+        url = "https://192.168.0.142:8080/store"
 
         
         cert_path = "/Users/marcos/Uni/4ºErasmus/CloudComputing/project/Docker/myCert.crt"
