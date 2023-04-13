@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import sys
 import mysql.connector
-import ssl
 
 
 app = Flask(__name__)
@@ -9,19 +8,13 @@ app = Flask(__name__)
 
 
 def get_db():
-    ssl_context = ssl.create_default_context(cafile="./myCert.crt")
-    ssl_context.verify_mode = ssl.CERT_REQUIRED
-    ssl_context.check_hostname = True
-    ssl_context.load_cert_chain(certfile="./myCert.crt", keyfile="./myKey.key")
-    config = {
-        'host':"localhost",
-        'user':"root",
-        'password':"Hipolito.88",
-        'database':"db_project_CloudComputing",
-        'ssl':{'ssl':ssl_context}
-    }
-    db = mysql.connector.connect(**config)  
-    return db
+   db = mysql.connector.connect(
+      host="mysql_container",
+      user="root",
+      password="root",
+      database="db_project_CloudComputing"
+   )  
+   return db
 
 @app.route('/store', methods=['GET','POST'])
 def store():
@@ -68,7 +61,7 @@ def chartSpeed():
     SELECT AVG(SPEED), Cartype
     FROM TrafficData
     GROUP by Cartype;"""
-    sql = "SELECT * FROM avgByCarTYPE";
+    sql = "SELECT * FROM avgByCarType"
     cur = db.cursor()
     cur.execute(dropViewSQL)
     cur.execute(createViewSQL)

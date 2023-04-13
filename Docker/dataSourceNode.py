@@ -22,11 +22,11 @@ def function():
         data = {"sensorName": sensorName,"type":selectedCar, "speed": speed, "date": formatDate}
         data = json.dumps(data).encode('utf-8')
 
-        url = "https://192.168.0.142:8080/store"
+        url = "https://10.132.174.72:8080/store"
 
         
-        cert_path = "/Users/marcos/Uni/4ºErasmus/CloudComputing/project/Docker/myCert.crt"
-        key_path = "/Users/marcos/Uni/4ºErasmus/CloudComputing/project/Docker/myKey.key"
+        cert_path = "./myCert.crt"
+        key_path = "./myKey.key"
         ssl_context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
         ssl_context.load_cert_chain(certfile=cert_path, keyfile=key_path)
         response = requests.post(url, data=data, headers={'Content-Type': 'application/json'},cert=(cert_path, key_path), verify=cert_path)
